@@ -6,4 +6,6 @@ This Python script works by first scraping the links to each song from the Spoti
 The script then takes each name and the artist who created the song and searches it on YouTube.
 Then it takes the first search result, downloads only the audio, and stores it in the "downloaded_songs" folder.
 
+
+Install dependencies using "pip install -r requirements.txt"
 Run using "python3 download-music.py"
