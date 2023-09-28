@@ -8,4 +8,5 @@ Then it takes the first search result, downloads only the audio, and stores it i
 
 
 Install dependencies using "pip install -r requirements.txt"
+
 Run using "python3 download-music.py"
