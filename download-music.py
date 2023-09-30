@@ -16,6 +16,7 @@ try:
 			try:
 				playlist = str(input("Enter link to Spotify Playlist: "))
 
+				#input validation
 				playlist_split = str(playlist).split("/")
 				if str(playlist_split[2]).lower() == "open.spotify.com" and str(playlist_split[3]).lower() == "playlist":
 					break
@@ -28,7 +29,8 @@ try:
 		
 
 
-	def get_soup(url):
+	def get_soup(URL):
+		#get HTML(soup element)
 		response = requests.get(url)
 		html = response.text
 		soup = BeautifulSoup(html, "html.parser")
@@ -39,7 +41,9 @@ try:
 
 	def create_song_link_list(soup):
 		song_link_list = []
+		#extract all <meta> elements
 		for song in soup.find_all("meta"):
+			#exctect content, which contains link to each song from <meta> elements
 			content = str(song.get("content"))
 			content_split = content.split("/")
 			try:
@@ -54,6 +58,7 @@ try:
 
 	def create_song_list(song_link_list):
 		song_list = []
+		#visit each song link individually and extract the page title which contains the song name and author
 		for song in song_link_list:
 			song_link = str(song)
 			soup = get_soup(song_link)
@@ -75,6 +80,7 @@ try:
 
 	def get_video_links(song_list):
 		vid_links = []
+		#search for each song on youtube
 		for song in song_list:
 			search_query = str(song).split()
 			search_query = "+".join(search_query)
@@ -88,6 +94,7 @@ try:
 			lines = contents.split(":")
 			search_term = re.compile(r"\bwatch\?v\=")
 			comparison = re.compile(r"\w\\\w\w")
+			#go through the HTML for the search results and extract the watch code for each video
 			while accepts < 16:
 				for line in lines:
 					if search_term.search(line) != None:
@@ -137,6 +144,7 @@ try:
 
 
 		accepts = 0
+		#checking connection with youtube video
 		for link in vid_links:
 			while accepts < 16:
 				url = f"https://youtube.com{str(link).strip()}"
@@ -158,12 +166,14 @@ try:
 
 
 
+		#creating a directory for the downloaded songs
 		try:
 			os.mkdir("downloaded_songs")
 		except FileExistsError:
 			pass
 
 		song = 0
+		#download songs
 		for link in vid_links:
 			while True:
 				try:
